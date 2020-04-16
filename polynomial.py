@@ -18,15 +18,38 @@ def simple(x):
 def create_term():
 	t1 = create_polynomial()
 	t2 = create_E1()
-	return choice([t1,t2])
+	t3 = create_polynomial2()
+	return choice([(t3,1),(t1,1),(t2,0)])
 
+def create_polynomial2(x=Symbol("x")):
+	degree =randint(MIN_DEGREE,MAX_DEGREE)
+	factors = [randint(MIN_FACT,MAX_FACT) for i in range(degree+1)]
+	factors2 = [choice([-1,1]) for i in range(degree+1)]
+	polynomial=[]
+	for i in range(degree,-1,-1):
+		if randint(-4,2)>0:
+			pass
+		else:		
+			polynomial.append(factors2[i]*factors[i]*x**(degree-i))
+	#print(polynomial)
+	pol=polynomial.pop()
+	#print(pol)
+	for i in polynomial:
+		pol = pol+i
+	#print(pol)
+	return pol
 
 def create_polynomial(x=Symbol("x")):
 	degree =randint(MIN_DEGREE,MAX_DEGREE)
 	factors = [randint(MIN_FACT,MAX_FACT) for i in range(degree+1)]
+	factors2 = [randint(MIN_FACT,MAX_FACT) for i in range(degree+1)]
+	factors3 = [choice([-2,-3,-1,1,2]) for i in range(degree+1)]
 	polynomial=[]
 	for i in range(degree,-1,-1):
-		polynomial.append(factors[i]*x**(degree-i))
+		if randint(-4,2)>0:
+			pass
+		else:		
+			polynomial.append(factors[i]*x**(factors2[i]*factors3[i]))
 	#print(polynomial)
 	pol=polynomial.pop()
 	#print(pol)
