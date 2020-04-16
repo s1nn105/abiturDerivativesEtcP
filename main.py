@@ -2,7 +2,7 @@ from sympy import *
 from polynomial import *
 import time
 init_printing()
-polynomial = create_polynomial()
+polynomial = create_term()
 x = Symbol('x')
 f= polynomial #everybody likes f(x) instead of polynomial(x)
 # first the derivative
