@@ -1,17 +1,20 @@
 from sympy import *
 from random import randint,choice
-MAX_DEGREE=5
+MAX_DEGREE=3
 MIN_DEGREE=1
-MAX_E_DEGREE=3
-MIN_E_DEGREE=1
-MAX_C_DEGREE=4
-MIN_C_DEGREE=2
-MIN_FACT=-3
-MAX_FACT=20
+
+#parameters for normal polinomials
+MIN_FACT=-5
+MAX_FACT=10
+#parameters for linear terms like a*(b-c*x)**d
 MIN_L_FACT=-10
 MAX_L_FACT=10
+#Parameters for e Terms like e**x etc pp
 MIN_E_FACT=-7
 MAX_E_FACT=9
+MAX_E_DEGREE=3
+MIN_E_DEGREE=1
+#Simply the derivatives and priors ? not recommended due to a lack of arithmetic polynomial reshaping skills of the author
 DO_SIMPLIFY= False
 def simple(x):
 	if DO_SIMPLIFY:
@@ -19,17 +22,31 @@ def simple(x):
 	else:
 		return x
 
-def create_term(back_end=False):
+def create_term(back_end=False):#wraps the functions of the file to make it usable for further better concartinations of terms like kettenregel (where it is used already)
 	t1 = create_polynomial()
 	t2 = create_E1()
 	t3 = create_polynomial2()
 	t4 = create_linconc()
-	pos = [t1,t2,t3,t4]
+	t6 = create_trignometric()
+	pos = [t1,t2,t3,t4,t6]
 	if not back_end:
 		t5=  create_polichain()
 	else:
 		return (choice(pos),choice(pos))
-	return choice([(t3,1),(t1,1),(t2,0),(t4,0),(t5,0)])
+	return choice([(t6,1),(t3,1),(t1,1),(t2,0),(t4,0),(t5,0)])
+
+def create_trignometric(x=Symbol("x")):
+	factors = [randint(MIN_FACT,MAX_FACT) for i in range(3)]
+	factor = choice([-1,1])
+	kind = choice([-1,1])
+	if kind <0:
+		poly = sin(factors[1]*x)
+	else:
+		poly = cos(factors[1]*x)
+	poly = factor*factors[0]*poly+factors[2]
+	return poly
+
+
 
 def create_polynomial2(x=Symbol("x")):
 	degree =randint(MIN_DEGREE,MAX_DEGREE)
@@ -51,7 +68,7 @@ def create_polynomial2(x=Symbol("x")):
 	#print(pol)
 	return pol
 
-def create_polynomial(x=Symbol("x")):
+def create_polynomial(x=Symbol("x")):#factures included name is missleading a bit
 	degree =randint(MIN_DEGREE,MAX_DEGREE)
 	factors = [randint(MIN_FACT,MAX_FACT) for i in range(degree+1)]
 	factors2 = [randint(MIN_DEGREE,MAX_DEGREE) for i in range(degree+1)]
